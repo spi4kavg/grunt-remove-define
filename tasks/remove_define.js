@@ -16,7 +16,7 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('remove_define', 'needed for migrating from reqiure-modules to old-style', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      wrap: false,
+      wrap: true,
       separator: ',',
     });
 
