@@ -16,8 +16,8 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('remove_define', 'needed for migrating from reqiure-modules to old-style', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      punctuation: '.',
-      separator: ', '
+      wrap: false,
+      separator: ',',
     });
 
     // Iterate over all specified file groups.
@@ -36,8 +36,16 @@ module.exports = function(grunt) {
         return grunt.file.read(filepath);
       }).join(grunt.util.normalizelf(options.separator));
 
-      // Handle options.
-      src += options.punctuation;
+      // replace to old-style
+      var firstIndex = src.indexOf("{"),
+          lastIndex = src.lastIndexOf("}"),
+          content = src.substring(firstIndex + 1, lastIndex);
+
+      if (options.wrap) {
+        content = "(function () {" + content + "})();";
+      }
+
+      src = content;
 
       // Write the destination file.
       grunt.file.write(f.dest, src);
